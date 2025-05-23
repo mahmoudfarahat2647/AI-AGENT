@@ -246,7 +246,7 @@ function App(): React.ReactNode {
 
 
   return (
-    <div className="flex h-screen w-screen text-slate-100">
+    <div className="flex h-screen w-screen text-slate-100 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950">
       <AgentSidebar
         agents={agents}
         currentAgentId={currentAgentId}
@@ -256,18 +256,19 @@ function App(): React.ReactNode {
         onOpenGlobalSettings={() => setIsGlobalSettingsOpen(true)}
       />
       
-      <main className="flex-1 p-8 md:p-12 flex flex-col bg-gradient-to-br from-slate-900 to-indigo-950 overflow-y-auto custom-scrollbar">
-        <header className="mb-6 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-300 via-sky-400 to-indigo-400 mb-2">
+      <main className="flex-1 p-8 md:p-12 flex flex-col backdrop-blur-sm bg-slate-900/20 overflow-y-auto custom-scrollbar">
+        <header className="mb-8 text-center relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 via-sky-500/10 to-indigo-500/10 blur-3xl -z-10"></div>
+          <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-200 via-sky-300 to-indigo-300 tracking-tight mb-2">
             {mainTitle}
           </h1>
           {currentAgent && (
-            <p className="text-xs text-slate-400 max-w-xl mx-auto mt-1">
+            <p className="text-xs font-light text-slate-300/80 max-w-xl mx-auto mt-2">
               {agentDescriptionUI}
             </p>
           )}
            {(!currentAgent && agents.length > 0) && (
-            <p className="text-sm text-slate-400">Please select an agent from the sidebar.</p>
+            <p className="text-sm font-light text-slate-300/90">Please select an agent from the sidebar.</p>
           )}
         </header>
         
@@ -275,19 +276,20 @@ function App(): React.ReactNode {
           <>
             <div className="flex-1 flex justify-center items-start min-h-[500px]">
               {/* Single Container for both input and output */}
-              <div className="bg-[#3a3a4c] px-6 py-5 rounded-xl border border-zinc-600/50 shadow-lg w-[75%] max-w-[2000px] h-full max-h-[1000px] backdrop-blur-sm"> 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
+              <div className="bg-gradient-to-b from-slate-800/90 to-slate-800/70 px-7 py-6 rounded-2xl border border-slate-700/50 shadow-2xl w-[75%] max-w-[2000px] h-full max-h-[1000px] backdrop-blur-md relative overflow-hidden"> 
+                <div className="absolute inset-0 bg-gradient-to-tr from-teal-500/5 via-transparent to-indigo-500/5"></div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-full relative">
                   {/* Input Column */}
                   <div className="flex flex-col h-full">
-                    <label htmlFor="userInput" className="text-sm font-semibold text-zinc-100 mb-2 flex items-center">
-                      <span className="material-icons-outlined text-teal-400 mr-2 text-base">edit_note</span>
+                    <label htmlFor="userInput" className="text-sm font-medium text-slate-200 mb-3 flex items-center">
+                      <span className="material-icons-outlined text-teal-300 mr-2 text-base">edit_note</span>
                       Prompt to optimize
                     </label>
                     <textarea 
                       id="userInput" 
                       value={userInput} 
                       onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setUserInput(e.target.value)}
-                      className="bg-white/95 p-4 rounded-lg border border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none resize-none custom-scrollbar-light text-sm overflow-y-auto mb-3 shadow-sm transition-all duration-200 hover:bg-white" 
+                      className="bg-white/90 p-4 rounded-xl border border-slate-200/20 text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-teal-400/30 focus:border-teal-400/30 outline-none resize-none custom-scrollbar-light text-sm overflow-y-auto mb-4 shadow-lg transition-all duration-200 hover:bg-white/95" 
                       placeholder={userPlaceholder}
                       style={{ height: '180px' }}
                       aria-label="Prompt to optimize"
@@ -296,7 +298,7 @@ function App(): React.ReactNode {
                     <button 
                       onClick={handleSubmit} 
                       disabled={isLoading || !currentAgent}
-                      className="w-full px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-60 disabled:cursor-not-allowed"
+                      className="w-full px-6 py-3.5 bg-gradient-to-r from-teal-500 to-sky-500 hover:from-teal-600 hover:to-sky-600 text-white font-medium rounded-xl shadow-lg transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-teal-400/50 focus:ring-offset-2 focus:ring-offset-slate-800 disabled:opacity-60 disabled:cursor-not-allowed hover:shadow-teal-500/10 hover:translate-y-[-1px]"
                     >
                       {isLoading ? <div className="loader mx-auto"></div> : submitBtnText}
                     </button>
@@ -304,26 +306,26 @@ function App(): React.ReactNode {
 
                   {/* Output Column */}
                   <div className="flex flex-col min-h-0">
-                    <div className="flex justify-between items-center mb-2">
-                      <label id="outputAreaLabel" htmlFor="outputAreaDisplay" className="text-sm font-semibold text-zinc-300">Optimized prompt</label>
+                    <div className="flex justify-between items-center mb-3">
+                      <label id="outputAreaLabel" htmlFor="outputAreaDisplay" className="text-sm font-medium text-slate-200">Optimized prompt</label>
                       <button 
                         onClick={handleCopy} 
                         title={copyButtonText}
                         aria-label="Copy output to clipboard" 
-                        className="flex items-center space-x-1.5 text-zinc-400 hover:text-zinc-200 transition-colors text-sm p-1.5 rounded-md hover:bg-zinc-800"
+                        className="flex items-center space-x-1.5 text-slate-400 hover:text-teal-300 transition-colors text-sm px-2 py-1 rounded-lg hover:bg-slate-700/50"
                       >
                         <span className="material-icons-outlined text-base leading-none">content_copy</span> 
-                        <span className="text-xs">{copyButtonText}</span>
+                        <span className="text-xs font-light">{copyButtonText}</span>
                       </button>
                     </div>                      <div
                         id="outputAreaContainer"
                         aria-labelledby="outputAreaLabel"
-                        className="flex-1 rounded-lg custom-scrollbar border border-zinc-600/50 relative bg-gray-700/90 shadow-inner backdrop-blur-sm"
+                        className="flex-1 rounded-xl custom-scrollbar border border-slate-600/30 relative bg-slate-700/50 shadow-inner backdrop-blur-md"
                         style={{ minHeight: '300px' }}
                     >
                       <div
                         id="outputAreaDisplay"
-                        className="p-3 text-zinc-300 whitespace-pre-wrap text-sm absolute inset-0 overflow-auto"
+                        className="p-4 text-slate-200 whitespace-pre-wrap text-sm absolute inset-0 overflow-auto font-light"
                         aria-live="polite"
                       >
                         {(outputArea && outputArea.trim()) ? outputArea.trim() : "The optimized prompt will be generated here..."}
