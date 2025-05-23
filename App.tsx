@@ -262,16 +262,19 @@ function App(): React.ReactNode {
           <>
             <div className="flex-1 flex justify-center items-start min-h-[500px]">
               {/* Single Container for both input and output */}
-              <div className="bg-[#3a3a4c] px-4 py-4 rounded-xl border border-zinc-700 shadow-md w-[75%] max-w-[2000px] h-full max-h-[1000px]"> 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
+              <div className="bg-[#3a3a4c] px-6 py-5 rounded-xl border border-zinc-600/50 shadow-lg w-[75%] max-w-[2000px] h-full max-h-[1000px] backdrop-blur-sm"> 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
                   {/* Input Column */}
                   <div className="flex flex-col h-full">
-                    <label htmlFor="userInput" className="text-sm font-semibold text-zinc-200 mb-2">Prompt to optimize</label>
+                    <label htmlFor="userInput" className="text-sm font-semibold text-zinc-100 mb-2 flex items-center">
+                      <span className="material-icons-outlined text-teal-400 mr-2 text-base">edit_note</span>
+                      Prompt to optimize
+                    </label>
                     <textarea 
                       id="userInput" 
                       value={userInput} 
                       onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setUserInput(e.target.value)}
-                      className="bg-white p-3 rounded-md border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none custom-scrollbar-light text-sm overflow-y-auto mb-3" 
+                      className="bg-white/95 p-4 rounded-lg border border-gray-200 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none resize-none custom-scrollbar-light text-sm overflow-y-auto mb-3 shadow-sm transition-all duration-200 hover:bg-white" 
                       placeholder={userPlaceholder}
                       style={{ height: '180px' }}
                       aria-label="Prompt to optimize"
@@ -299,12 +302,11 @@ function App(): React.ReactNode {
                         <span className="material-icons-outlined text-base leading-none">content_copy</span> 
                         <span className="text-xs">{copyButtonText}</span>
                       </button>
-                    </div>
-                    <div
-                      id="outputAreaContainer"
-                      aria-labelledby="outputAreaLabel"
-                      className="flex-1 rounded-md custom-scrollbar border border-zinc-700 relative bg-gray-700"
-                      style={{ minHeight: '300px' }}
+                    </div>                      <div
+                        id="outputAreaContainer"
+                        aria-labelledby="outputAreaLabel"
+                        className="flex-1 rounded-lg custom-scrollbar border border-zinc-600/50 relative bg-gray-700/90 shadow-inner backdrop-blur-sm"
+                        style={{ minHeight: '300px' }}
                     >
                       <div
                         id="outputAreaDisplay"
