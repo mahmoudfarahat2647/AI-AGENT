@@ -260,12 +260,12 @@ function App(): React.ReactNode {
         
         {currentAgent ? (
           <>
-            <div className="flex-1 min-h-[250px] md:min-h-[280px] flex justify-center">
+            <div className="flex-1 flex justify-center items-start min-h-[600px]">
               {/* Single Container for both input and output */}
-              <div className="bg-black px-4 py-4 rounded-xl border border-zinc-700 shadow-md w-[83%]"> 
-                <div className="grid grid-cols-2 gap-6">
+              <div className="bg-[#101729] px-4 py-6 rounded-xl border border-zinc-700 shadow-md w-[75%] max-w-[3000px] h-full max-h-[1500px]"> 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
                   {/* Input Column */}
-                  <div className="flex flex-col">
+                  <div className="flex flex-col h-full">
                     <label htmlFor="userInput" className="text-sm font-semibold text-zinc-200 mb-2">Prompt to optimize</label>
                     <textarea 
                       id="userInput" 
@@ -273,7 +273,7 @@ function App(): React.ReactNode {
                       onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setUserInput(e.target.value)}
                       className="bg-white p-3 rounded-md border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none custom-scrollbar-light text-sm overflow-y-auto mb-4" 
                       placeholder={userPlaceholder}
-                      rows={8} 
+                      style={{ height: '250px' }}
                       aria-label="Prompt to optimize"
                     />
                     
@@ -287,7 +287,7 @@ function App(): React.ReactNode {
                   </div>
 
                   {/* Output Column */}
-                  <div className="flex flex-col">
+                  <div className="flex flex-col min-h-0">
                     <div className="flex justify-between items-center mb-2">
                       <label id="outputAreaLabel" htmlFor="outputAreaDisplay" className="text-sm font-semibold text-zinc-300">Optimized prompt</label>
                       <button 
@@ -303,13 +303,12 @@ function App(): React.ReactNode {
                     <div
                       id="outputAreaContainer"
                       aria-labelledby="outputAreaLabel"
-                      className="flex-1 rounded-md custom-scrollbar overflow-y-auto border border-zinc-700 h-[600px]"
-                      style={{ height: '400px', minHeight: '400px' }}
+                      className="flex-1 rounded-md custom-scrollbar border border-zinc-700 relative bg-gray-700"
+                      style={{ minHeight: '300px' }}
                     >
                       <div
                         id="outputAreaDisplay"
-                        className="p-3 text-zinc-300 whitespace-pre-wrap text-sm bg-gray-700 min-h-full"
-                        style={{ height: '100%' }}
+                        className="p-3 text-zinc-300 whitespace-pre-wrap text-sm absolute inset-0 overflow-auto"
                         aria-live="polite"
                       >
                         {(outputArea && outputArea.trim()) ? outputArea.trim() : "The optimized prompt will be generated here..."}
@@ -318,7 +317,6 @@ function App(): React.ReactNode {
                   </div>
                 </div>
                 <p className="text-xs text-zinc-500 mt-4 text-center">
-                  Prompt Optimizer version 2.1.1 - Last updated: 24th May 2024
                 </p>
               </div>
             </div>

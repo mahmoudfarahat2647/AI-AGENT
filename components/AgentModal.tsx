@@ -84,11 +84,11 @@ export const AgentModal: React.FC<AgentModalProps> = ({ isOpen, onClose, onSave,
     onSave(formData);
   };
 
-  const commonInputClass = "w-full p-2.5 bg-slate-900/70 border border-slate-600 rounded-md text-slate-200 focus:ring-1 focus:ring-teal-500 focus:border-teal-500 placeholder-slate-500 text-sm custom-scrollbar";
+  const commonInputClass = "w-full p-2.5 bg-[#27272a] border border-slate-600 rounded-md text-slate-200 focus:ring-1 focus:ring-teal-500 focus:border-teal-500 placeholder-slate-500 text-sm custom-scrollbar";
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-[60]" role="dialog" aria-modal="true" aria-labelledby="agent-modal-title">
-      <div className="bg-slate-800/80 backdrop-blur-lg border border-slate-700 p-6 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+      <div style={{ backgroundColor: '#3a3a4c' }} className="border border-slate-700 p-6 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
         <div className="flex justify-between items-center mb-6 flex-shrink-0">
           <h2 id="agent-modal-title" className="text-xl font-semibold text-teal-400">
             {agent && 'id' in agent ? 'Edit Agent' : 'Create New Agent'}
