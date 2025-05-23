@@ -140,6 +140,7 @@ export const API_PROVIDER_OPTIONS: Readonly<ApiProviderOption[]> = [
     defaultModelId: 'gemini-2.5-flash-preview-04-17',
     models: [
         { id: 'gemini-2.5-flash-preview-04-17', name: 'Gemini 2.5 Flash Preview (04-17)' },
+        { id: 'gemini-2.5-flash-preview-05-20', name: 'Gemini 2.5 Flash Preview (05-20)' },
         { id: 'gemini-2.5-pro-preview-05-06', name: 'Gemini 2.5 Pro Preview (05-06)' },
     ],
   },
@@ -151,21 +152,13 @@ export const API_PROVIDER_OPTIONS: Readonly<ApiProviderOption[]> = [
     apiKeyLink: 'https://openrouter.ai/keys',
     defaultModelId: 'mistralai/mistral-7b-instruct:free',
     models: [
-        // Free Models
+        // Free Models Only
         { id: 'mistralai/mistral-7b-instruct:free', name: 'Mistral 7B Instruct (Free)' },
         { id: 'nousresearch/nous-capybara-7b:free', name: 'Nous Capybara 7B (Free)' },
         { id: 'huggingfaceh4/zephyr-7b-beta:free', name: 'Zephyr 7B Beta (Free)' },
         { id: 'openchat/openchat-7b:free', name: 'OpenChat 7B (Free)' },
         { id: 'google/gemma-7b-it:free', name: 'Google Gemma 7B (Free)'},
-        // Paid Models (Examples)
-        { id: 'openai/gpt-4o', name: 'OpenAI GPT-4o' },
-        { id: 'openai/gpt-3.5-turbo', name: 'OpenAI GPT-3.5 Turbo' },
-        { id: 'anthropic/claude-3.5-sonnet', name: 'Anthropic Claude 3.5 Sonnet' },
-        { id: 'anthropic/claude-3-haiku', name: 'Anthropic Claude 3 Haiku' },
-        { id: 'google/gemini-1.5-pro-latest', name: 'Google Gemini 1.5 Pro' }, 
-        { id: 'google/gemini-1.5-flash-latest', name: 'Google Gemini 1.5 Flash' },
-        { id: 'mistralai/mistral-large-latest', name: 'Mistral Large' },
-        { id: 'mistralai/mixtral-8x7b-instruct', name: 'Mixtral 8x7B Instruct' },
+        { id: 'deepseek/deepseek-v3:free', name: 'DeepSeek V3 0324 (Free)' },
     ],
   },
   {

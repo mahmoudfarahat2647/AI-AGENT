@@ -32,9 +32,8 @@ export async function generateContent({
       const ai = new GoogleGenAI({ apiKey });
       const googleApiConfig: any = {
         temperature: 0.3,
-        // maxOutputTokens: 2048 // Example, can be added if needed
       };
-      // Add thinkingConfig only for the specified flash model
+      
       if (modelId === 'gemini-2.5-flash-preview-04-17') {
         googleApiConfig.thinkingConfig = { thinkingBudget: 0 };
       }
@@ -45,7 +44,7 @@ export async function generateContent({
       const response: GenerateContentResponse = await ai.models.generateContent({
         model: modelId,
         contents: [{ role: "user", parts: [{ text: userInput }] }],
-        config: { // systemInstruction is part of the config object
+        config: {
           systemInstruction: systemInstructionWithFormat,
           ...googleApiConfig
         }
@@ -60,7 +59,6 @@ export async function generateContent({
           { role: "user", content: userInput }
         ],
         temperature: 0.3,
-        // max_tokens: 2048 // Example OpenRouter parameter for max tokens
       };
 
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -68,7 +66,7 @@ export async function generateContent({
         headers: {
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
-          'X-Title': 'AI Prompt Agent', // Optional: Helps OpenRouter identify your app
+          'X-Title': 'AI Prompt Agent',
         },
         body: JSON.stringify(openRouterRequestBody),
       });
@@ -80,8 +78,6 @@ export async function generateContent({
       const data = await response.json();
       generatedText = data.choices?.[0]?.message?.content;
     } else {
-      // Placeholder for other providers or throw error for unsupported
-      // For 'openai', 'anthropic', 'custom' if not routed via OpenRouter, actual implementation would be needed here.
       throw new Error(`API Provider "${provider}" is not directly supported for generation in this version (unless routed via OpenRouter).`);
     }
 
@@ -90,32 +86,66 @@ export async function generateContent({
       throw new Error("No content generated or API returned an empty response.");
     }
     
-    // Process JSON if applicable 
-    // (especially for OpenRouter, or Google if responseMimeType wasn't set or if model didn't strictly adhere)
     if (outputFormat === 'json') {
-      // For Google with responseMimeType: "application/json", response.text should be clean JSON.
-      // For OpenRouter, or if Google's output includes markdown fences despite mime type:
       let jsonStr = generatedText.trim();
-      const fenceRegex = /^```(\w*json)?\s*\n?(.*?)\n?\s*```$/s; // More flexible regex for ```json ... ```
+      const fenceRegex = /^```(\w*json)?\s*\n?(.*?)\n?\s*```$/s;
       const match = jsonStr.match(fenceRegex);
-      if (match && match[2]) { // If markdown fence is found and has content
-        jsonStr = match[2].trim(); // Extract content within fences
+      if (match && match[2]) {
+        jsonStr = match[2].trim();
       }
       
       try {
         const jsonObj = JSON.parse(jsonStr);
-        generatedText = JSON.stringify(jsonObj, null, 2); // Beautify
+        generatedText = JSON.stringify(jsonObj, null, 2);
       } catch (e) {
-        // If parsing fails, it means the content (either raw or extracted) is not valid JSON.
         console.warn("AI output was expected to be JSON but could not be parsed/beautified. Using raw output.", e, "Attempted to parse:", jsonStr);
-        // Keep the 'generatedText' as is (it might be the raw output, or the stripped version if fences were present but content wasn't JSON)
       }
     }
     return generatedText;
 
   } catch (error: any) {
     console.error(`Error calling ${provider} API with model ${modelId}:`, error);
-    const message = error.message || `An unknown error occurred with the ${provider} API.`;
+    let message = error.message || `An unknown error occurred with the ${provider} API.`;
+    
+    // Enhanced error handling with specific messages and suggestions
+    if (provider === 'google') {
+      if (error.message?.includes('RESOURCE_EXHAUSTED') || error.message?.includes('429')) {
+        message = `Resource limit reached for ${modelId}. This may be due to:\n\n` +
+                 "1. API rate limit exceeded\n" +
+                 "2. Quota exhaustion\n" +
+                 "3. Limited model availability\n\n" +
+                 "Suggestions:\n" +
+                 "- Wait a few minutes and try again\n" +
+                 "- Switch to an alternative model:\n" +
+                 "  • 'gemini-2.5-pro-preview-05-06' for best quality\n" +
+                 "  • 'gemini-1.5-pro-latest' for better availability\n" +
+                 "- Check your quota in Google AI Studio\n" +
+                 "- Consider using OpenRouter as a fallback provider";
+      } else if (error.message?.includes('INVALID_ARGUMENT')) {
+        message = "Invalid input or configuration. Please check:\n\n" +
+                 "1. Input length is within model limits\n" +
+                 "2. Content does not violate usage policies\n" +
+                 "3. API key is correctly formatted";
+      } else if (error.message?.includes('PERMISSION_DENIED')) {
+        message = "Permission denied. Please verify:\n\n" +
+                 "1. Your API key is valid\n" +
+                 "2. You have access to the selected model\n" +
+                 "3. Your billing is properly set up";
+      }
+    } else if (provider === 'openrouter') {
+      if (error.message?.includes('429')) {
+        message = "OpenRouter rate limit exceeded. Consider:\n\n" +
+                 "1. Waiting a few minutes\n" +
+                 "2. Switching to a different model\n" +
+                 "3. Upgrading your OpenRouter tier";
+      } else if (error.message?.includes('402')) {
+        message = "OpenRouter credits depleted. Please:\n\n" +
+                 "1. Check your balance\n" +
+                 "2. Add more credits\n" +
+                 "3. Switch to a free model";
+      }
+    }
+    
     throw new Error(message);
   }
 }

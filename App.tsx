@@ -222,7 +222,20 @@ function App(): React.ReactNode {
       setOutputArea(generatedText);
     } catch (error: any) {
       console.error(`Error generating content with ${currentAgent.apiProvider} / ${currentAgent.modelId}:`, error);
-      setOutputArea(`Error: ${error.message}`);
+      
+      // Enhanced error display with proper spacing and list formatting
+      let userError = error.message;
+      if (error.message.includes('\n')) {
+        // Add subtle divider between sections if needed
+        userError = userError.replace(/\n\n/g, '\n\n---\n\n');
+        // Enhance bullet points if they exist
+        userError = userError.replace(/^\s*•\s*/gm, '→ ');
+        userError = userError.replace(/^\s*-\s*/gm, '→ ');
+      }
+
+      // Add error prefix if not already an "Error:"
+      const errorPrefix = !userError.toLowerCase().startsWith('error:') ? 'Error:\n\n' : '';
+      setOutputArea(`${errorPrefix}${userError}`);
     } finally {
       setIsLoading(false);
       setSubmitBtnText("Optimize Prompt"); // Reset button text
@@ -355,39 +368,79 @@ function App(): React.ReactNode {
               </button>
             </div>
             <div className="flex-grow overflow-y-auto custom-scrollbar pr-3 space-y-5">
-              <SettingField label="Default API Provider (for this screen)" id="apiProviderGlobal">
-                <select 
-                  value={selectedApiProvider} 
-                  onChange={(e) => setSelectedApiProvider(e.target.value as ApiProviderType)}
-                  className={commonInputClass}
-                >
-                  {API_PROVIDER_OPTIONS.map(opt => (
-                    <option key={opt.value} value={opt.value}>{opt.label}</option>
-                  ))}
-                </select>
-              </SettingField>
+              <div className="mb-6">
+                <h3 className="text-sm font-medium text-slate-300 mb-3">Active Provider Settings</h3>
+                <SettingField label="Default API Provider" id="apiProviderGlobal">
+                  <select 
+                    value={selectedApiProvider} 
+                    onChange={(e) => setSelectedApiProvider(e.target.value as ApiProviderType)}
+                    className={commonInputClass}
+                  >
+                    {API_PROVIDER_OPTIONS.map(opt => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
+                </SettingField>
 
-              <SettingField 
-                label={currentGlobalProviderConfig.apiKeyName} 
-                id="activeApiKeyGlobal" 
-                required 
-                description={
-                  currentGlobalProviderConfig.apiKeyLink ? 
-                  <>Need an API key for {currentGlobalProviderConfig.label}? <a href={currentGlobalProviderConfig.apiKeyLink} target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:underline">Get one here.</a> Your key is stored locally.</>
-                  : "Your API key is stored locally in your browser."
-                }
-              >
-                <textarea 
-                  value={activeGlobalApiKey} 
-                  onChange={(e) => setActiveGlobalApiKey(e.target.value)} 
-                  rows={3} 
-                  placeholder={currentGlobalProviderConfig.apiKeyPlaceholder}
-                  className={`${commonInputClass} min-h-[70px] resize-y text-xs`}
-                />
-              </SettingField>
+                <SettingField 
+                  label={currentGlobalProviderConfig.apiKeyName} 
+                  id="activeApiKeyGlobal" 
+                  required 
+                  description={
+                    currentGlobalProviderConfig.apiKeyLink ? 
+                    <>Need an API key for {currentGlobalProviderConfig.label}? <a href={currentGlobalProviderConfig.apiKeyLink} target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:underline">Get one here.</a> Your key is stored locally.</>
+                    : "Your API key is stored locally in your browser."
+                  }
+                >
+                  <textarea 
+                    value={activeGlobalApiKey} 
+                    onChange={(e) => setActiveGlobalApiKey(e.target.value)} 
+                    rows={2} 
+                    placeholder={currentGlobalProviderConfig.apiKeyPlaceholder}
+                    className={`${commonInputClass} min-h-[60px] resize-y text-xs`}
+                  />
+                </SettingField>
+              </div>
+
+              <div className="border-t border-slate-700 pt-6">
+                <h3 className="text-sm font-medium text-slate-300 mb-3">All Saved API Keys</h3>
+                <div className="space-y-4">
+                  {API_PROVIDER_OPTIONS.filter(provider => provider.value !== selectedApiProvider).map(provider => (
+                    <SettingField 
+                      key={provider.value}
+                      label={provider.apiKeyName}
+                      id={`apiKey_${provider.value}`}
+                    >
+                      <div className="relative">
+                        <textarea 
+                          value={apiKeys[provider.value] || ''}
+                          onChange={(e) => setApiKeys(prev => ({ ...prev, [provider.value]: e.target.value }))}
+                          rows={2}
+                          placeholder={provider.apiKeyPlaceholder}
+                          className={`${commonInputClass} min-h-[60px] resize-y text-xs pr-20`}
+                        />
+                        {provider.apiKeyLink && (
+                          <a 
+                            href={provider.apiKeyLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="absolute right-2 top-2 text-xs text-teal-400 hover:text-teal-300 hover:underline"
+                          >
+                            Get Key
+                          </a>
+                        )}
+                      </div>
+                    </SettingField>
+                  ))}
+                </div>
+              </div>
+
               {currentGlobalProviderConfig.defaultModelId && currentGlobalProviderConfig.models.length > 0 && (
                  <div className="text-xs text-center text-slate-400 bg-slate-900/50 p-3 rounded-md mt-2 border border-slate-700">
-                    Default model for new agents using {currentGlobalProviderConfig.label}: <br/><span className="font-medium text-slate-300">{currentGlobalProviderConfig.models.find(m=>m.id === currentGlobalProviderConfig.defaultModelId)?.name || currentGlobalProviderConfig.defaultModelId}</span>.
+                    Default model for new agents using {currentGlobalProviderConfig.label}: <br/>
+                    <span className="font-medium text-slate-300">
+                      {currentGlobalProviderConfig.models.find(m=>m.id === currentGlobalProviderConfig.defaultModelId)?.name || currentGlobalProviderConfig.defaultModelId}
+                    </span>
                     <br/>
                     <span className="text-slate-500">(Models are configured per agent during creation/editing.)</span>
                 </div>
