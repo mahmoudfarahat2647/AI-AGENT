@@ -262,12 +262,12 @@ function App(): React.ReactNode {
             {mainTitle}
           </h1>
           {currentAgent && (
-            <p className="text-sm md:text-base text-slate-400 max-w-2xl mx-auto">
+            <p className="text-xs text-slate-400 max-w-xl mx-auto mt-1">
               {agentDescriptionUI}
             </p>
           )}
            {(!currentAgent && agents.length > 0) && (
-            <p className="text-lg text-slate-400">Please select an agent from the sidebar.</p>
+            <p className="text-sm text-slate-400">Please select an agent from the sidebar.</p>
           )}
         </header>
         
