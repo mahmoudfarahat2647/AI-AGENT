@@ -244,12 +244,12 @@ function App(): React.ReactNode {
       />
       
       <main className="flex-1 p-8 md:p-12 flex flex-col bg-gradient-to-br from-slate-900 to-indigo-950 overflow-y-auto custom-scrollbar">
-        <header className="mb-10 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-300 via-sky-400 to-indigo-400 mb-2">
+        <header className="mb-6 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-300 via-sky-400 to-indigo-400 mb-2">
             {mainTitle}
           </h1>
           {currentAgent && (
-            <p className="text-base md:text-lg text-slate-400 max-w-2xl mx-auto">
+            <p className="text-sm md:text-base text-slate-400 max-w-2xl mx-auto">
               {agentDescriptionUI}
             </p>
           )}
@@ -260,10 +260,10 @@ function App(): React.ReactNode {
         
         {currentAgent ? (
           <>
-            <div className="flex-1 flex justify-center items-start min-h-[600px]">
+            <div className="flex-1 flex justify-center items-start min-h-[500px]">
               {/* Single Container for both input and output */}
-              <div className="bg-[#101729] px-4 py-6 rounded-xl border border-zinc-700 shadow-md w-[75%] max-w-[3000px] h-full max-h-[1500px]"> 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-full">
+              <div className="bg-[#3a3a4c] px-4 py-4 rounded-xl border border-zinc-700 shadow-md w-[75%] max-w-[2000px] h-full max-h-[1000px]"> 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
                   {/* Input Column */}
                   <div className="flex flex-col h-full">
                     <label htmlFor="userInput" className="text-sm font-semibold text-zinc-200 mb-2">Prompt to optimize</label>
@@ -271,9 +271,9 @@ function App(): React.ReactNode {
                       id="userInput" 
                       value={userInput} 
                       onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setUserInput(e.target.value)}
-                      className="bg-white p-3 rounded-md border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none custom-scrollbar-light text-sm overflow-y-auto mb-4" 
+                      className="bg-white p-3 rounded-md border border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none custom-scrollbar-light text-sm overflow-y-auto mb-3" 
                       placeholder={userPlaceholder}
-                      style={{ height: '250px' }}
+                      style={{ height: '180px' }}
                       aria-label="Prompt to optimize"
                     />
                     
