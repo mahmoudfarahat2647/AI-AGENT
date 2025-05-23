@@ -1,0 +1,6 @@
+{
+  "name": "AI Prompt Agent",
+  "description": "An application to manage and use AI agents for generating structured content based on various output formats and custom instructions.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
