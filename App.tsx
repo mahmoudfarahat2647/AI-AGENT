@@ -5,7 +5,6 @@ import { generateContent } from './services/aiService';
 import { AgentSidebar } from './components/AgentSidebar';
 import { AgentModal } from './components/AgentModal';
 import { SettingField } from './components/SettingField';
-
 const generateId = () => `agent_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 
 function App(): React.ReactNode {
@@ -281,21 +280,34 @@ function App(): React.ReactNode {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-full relative">
                   {/* Input Column */}
                   <div className="flex flex-col h-full">
-                    <label htmlFor="userInput" className="text-sm font-medium text-slate-200 mb-3 flex items-center">
-                      <span className="material-icons-outlined text-teal-300 mr-2 text-base">edit_note</span>
-                      Prompt to optimize
-                    </label>
-                    <textarea 
-                      id="userInput" 
-                      value={userInput} 
-                      onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setUserInput(e.target.value)}
-                      className="bg-white/90 p-4 rounded-xl border border-slate-200/20 text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-teal-400/30 focus:border-teal-400/30 outline-none resize-none custom-scrollbar-light text-sm overflow-y-auto mb-4 shadow-lg transition-all duration-200 hover:bg-white/95" 
-                      placeholder={userPlaceholder}
-                      style={{ height: '180px' }}
-                      aria-label="Prompt to optimize"
-                    />
+                    <div className="flex justify-between items-center mb-3">
+                      <label htmlFor="userInput" className="text-sm font-medium text-slate-200 flex items-center">
+                        <span className="material-icons-outlined text-teal-300 mr-2 text-base">edit_note</span>
+                        Prompt to optimize
+                      </label>
+                      <button
+                        onClick={() => setUserInput('')}
+                        title="Clear Prompt"
+                        aria-label="Clear prompt input"
+                        className="flex items-center space-x-1.5 text-slate-400 hover:text-red-400 transition-colors text-sm px-2 py-1 rounded-lg hover:bg-slate-700/50"
+                      >
+                        <span className="material-icons-outlined text-base leading-none">refresh</span>
+                        <span className="text-xs font-light">Reset</span>
+                      </button>
+                    </div>
+                    <div className="relative w-full mb-4"> {/* Added relative container */}
+                      <textarea
+                        id="userInput"
+                        value={userInput}
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setUserInput(e.target.value)}
+                        className="bg-white/90 p-4 rounded-xl border border-slate-200/20 text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-teal-400/30 focus:border-teal-400/30 outline-none resize-none custom-scrollbar-light text-sm overflow-y-auto shadow-lg transition-all duration-200 hover:bg-white/95 w-full"
+                        placeholder={userPlaceholder}
+                        style={{ height: '180px' }}
+                        aria-label="Prompt to optimize"
+                      />
+                    </div>
                     
-                    <button 
+                    <button
                       onClick={handleSubmit} 
                       disabled={isLoading || !currentAgent}
                       className="w-full px-6 py-3.5 bg-gradient-to-r from-teal-500 to-sky-500 hover:from-teal-600 hover:to-sky-600 text-white font-medium rounded-xl shadow-lg transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-teal-400/50 focus:ring-offset-2 focus:ring-offset-slate-800 disabled:opacity-60 disabled:cursor-not-allowed hover:shadow-teal-500/10 hover:translate-y-[-1px]"
@@ -307,14 +319,21 @@ function App(): React.ReactNode {
                   {/* Output Column */}
                   <div className="flex flex-col min-h-0">
                     <div className="flex justify-between items-center mb-3">
-                      <label id="outputAreaLabel" htmlFor="outputAreaDisplay" className="text-sm font-medium text-slate-200">Optimized prompt</label>
-                      <button 
-                        onClick={handleCopy} 
+                      <label id="outputAreaLabel" htmlFor="outputAreaDisplay" className="text-sm font-medium text-slate-200 flex items-center">
+                        Optimized prompt
+                        {currentAgent && (
+                          <span className="ml-2 px-2 py-0.5 bg-slate-700 text-teal-300 text-xs font-mono rounded-full">
+                            {currentAgent.outputFormat.toUpperCase()}
+                          </span>
+                        )}
+                      </label>
+                      <button
+                        onClick={handleCopy}
                         title={copyButtonText}
-                        aria-label="Copy output to clipboard" 
+                        aria-label="Copy output to clipboard"
                         className="flex items-center space-x-1.5 text-slate-400 hover:text-teal-300 transition-colors text-sm px-2 py-1 rounded-lg hover:bg-slate-700/50"
                       >
-                        <span className="material-icons-outlined text-base leading-none">content_copy</span> 
+                        <span className="material-icons-outlined text-base leading-none">content_copy</span>
                         <span className="text-xs font-light">{copyButtonText}</span>
                       </button>
                     </div>                      <div
