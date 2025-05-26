@@ -310,7 +310,7 @@ function App(): React.ReactNode {
                     <button
                       onClick={handleSubmit} 
                       disabled={isLoading || !currentAgent}
-                      className="w-full px-6 py-3.5 bg-gradient-to-r from-teal-500 to-sky-500 hover:from-teal-600 hover:to-sky-600 text-white font-medium rounded-xl shadow-lg transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-teal-400/50 focus:ring-offset-2 focus:ring-offset-slate-800 disabled:opacity-60 disabled:cursor-not-allowed hover:shadow-teal-500/10 hover:translate-y-[-1px]"
+                      className="w-full px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl shadow-lg transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-red-400/50 focus:ring-offset-2 focus:ring-offset-slate-800 disabled:opacity-60 disabled:cursor-not-allowed hover:shadow-red-500/10 hover:translate-y-[-1px]"
                     >
                       {isLoading ? <div className="loader mx-auto"></div> : submitBtnText}
                     </button>
