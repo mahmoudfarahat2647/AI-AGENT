@@ -84,11 +84,11 @@ export const AgentModal: React.FC<AgentModalProps> = ({ isOpen, onClose, onSave,
     onSave(formData);
   };
 
-  const commonInputClass = "w-full p-2.5 bg-[#27272a] border border-slate-600 rounded-md text-slate-200 focus:ring-1 focus:ring-teal-500 focus:border-teal-500 placeholder-slate-500 text-sm custom-scrollbar";
+  const commonInputClass = "w-full p-2.5 bg-[#1e1e32] border border-slate-700/50 rounded-md text-slate-200 focus:ring-1 focus:ring-teal-400 focus:border-teal-400 placeholder-slate-500 text-sm custom-scrollbar transition-all duration-200 hover:border-slate-600";
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-[60]" role="dialog" aria-modal="true" aria-labelledby="agent-modal-title">
-      <div style={{ backgroundColor: '#3a3a4c' }} className="border border-slate-700 p-6 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 bg-black/90 backdrop-blur-lg flex items-center justify-center p-4 z-[60]" role="dialog" aria-modal="true" aria-labelledby="agent-modal-title">
+      <div className="bg-[#1a1a2e] border border-slate-800/50 p-6 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col backdrop-blur-sm backdrop-saturate-150">
         <div className="flex justify-between items-center mb-6 flex-shrink-0">
           <h2 id="agent-modal-title" className="text-xl font-semibold text-teal-400">
             {agent && 'id' in agent ? 'Edit Agent' : 'Create New Agent'}
@@ -147,9 +147,9 @@ export const AgentModal: React.FC<AgentModalProps> = ({ isOpen, onClose, onSave,
             <textarea value={formData.customInstructions} onChange={(e) => handleChange('customInstructions', e.target.value)} rows={7} placeholder="You are a helpful AI assistant specialized in..." className={`${commonInputClass} min-h-[120px] resize-y`}></textarea>
           </SettingField>
           
-          <div className="mt-8 flex-shrink-0 pt-5 border-t border-slate-700">
+          <div className="mt-8 flex-shrink-0 pt-5 border-t border-slate-800/50">
             <button type="submit"
-              className="w-full px-6 py-3 text-sm bg-gradient-to-r from-teal-500 to-sky-600 hover:from-teal-600 hover:to-sky-700 text-white font-semibold rounded-md shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 focus:ring-offset-slate-800">
+              className="w-full px-6 py-3 text-sm bg-gradient-to-r from-teal-500/90 to-cyan-600/90 hover:from-teal-400 hover:to-cyan-500 text-white font-semibold rounded-md shadow-lg hover:shadow-teal-500/10 transition-all duration-300 ease-out transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-teal-400/50 focus:ring-offset-2 focus:ring-offset-[#1a1a2e] backdrop-blur-sm">
               {agent && 'id' in agent ? 'Save Changes' : 'Create Agent'}
             </button>
           </div>
