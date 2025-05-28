@@ -1,6 +1,6 @@
 import React from 'react';
 import { Agent } from '../types';
-import Logo from './Logo';
+// import Logo from './Logo';
 
 interface AgentSidebarProps {
   agents: Agent[];
@@ -21,9 +21,9 @@ export const AgentSidebar: React.FC<AgentSidebarProps> = ({
 }) => {
   return (
     <aside className="w-80 bg-slate-900/70 backdrop-blur-md p-6 flex flex-col justify-between border-r border-slate-800 h-screen">
-      <div className="mb-8">
+      {/* <div className="mb-8">
         <Logo />
-      </div>
+      </div> */}
       <div>
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-2xl font-semibold text-teal-400">Agents</h2>
